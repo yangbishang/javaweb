@@ -16,6 +16,15 @@
     <url-pattern>/UserServlet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>com.javaweb.servlet.AdminServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/AdminServlet</url-pattern>
+  </servlet-mapping>
+
   <!-- Servlet产生验证码 -->
   <servlet>
     <servlet-name>RandomCodeServlet</servlet-name>
