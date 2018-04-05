@@ -17,6 +17,16 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>SessionServlet</servlet-name>
+    <servlet-class>com.javaweb.servlet.SessionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SessionServlet</servlet-name>
+    <url-pattern>/SessionServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
     <servlet-name>AdminServlet</servlet-name>
     <servlet-class>com.javaweb.servlet.AdminServlet</servlet-class>
   </servlet>

@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -18,30 +19,71 @@ public class AdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
+        HttpSession session = request.getSession();
         AdminDao adminDao = new AdminDao();
-        Admin admin = new Admin();
+        JSONObject jo = new JSONObject();
+        String baction = request.getParameter("baction");
 
-        admin = adminDao.checkAdmin(username,password);
+        if ("login".equals(baction)) {
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
 
-        JSONObject  jo = new JSONObject();
-        if(admin != null){
-            JsonConfig jsonConfig = new JsonConfig();
-            jo = (JSONObject) JSONSerializer.toJSON(admin,jsonConfig);
-        }else{
+            Admin admin = new Admin();
+            admin = adminDao.checkAdmin(username, password);
 
-            jo.put("code", 400);
-            jo.put("message", "错误的用户名或密码!");
+
+            if (admin.getUsername() != null) {
+                //如果admin不为空，则把admin存入session
+                admin = adminDao.checkAdmin(username, password);
+                session.setAttribute("admin", admin);
+
+                JsonConfig jsonConfig = new JsonConfig();
+                jo = (JSONObject) JSONSerializer.toJSON(admin, jsonConfig);
+            } else {
+                jo.put("code", 400);
+                jo.put("message", "错误的用户名或密码!");
+            }
+            out.println(jo.toString());
+            out.flush();
+            out.close();
+        }else if("checkOldPassword".equals(baction)){
+            String lastPassword = request.getParameter("lastPassword");
+            Admin admin = (Admin) session.getAttribute("admin");
+            String username =admin.getUsername();
+            String password = null;
+            password = adminDao.findByPassword(lastPassword,username);
+
+
+
+            if(password!=null&&!"".equals(password)){
+                jo.put("code","200");
+                jo.put("message","密码正确！");
+            }else{
+                jo.put("code","400");
+                jo.put("message","旧密码错误！");
+            }
+            out.println(jo.toString());
+
+        }else if("updateOldPassword".equals(baction)){
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
+            Admin admin = (Admin) session.getAttribute("admin");
+            String username = admin.getUsername();
+
+            int count = 0;
+            count = adminDao.updatePassword(oldPassword,newPassword,username);
+            if(count!=0){
+                jo.put("code",200);
+                jo.put("message","成功");
+            }else{
+                jo.put("code",400);
+                jo.put("message","失败");
+            }
+
+            out.println(jo.toString());
+
+
         }
-
-
-        out.println(jo.toString());
-
-
-        out.flush();
-        out.close();
     }
 
     @Override
