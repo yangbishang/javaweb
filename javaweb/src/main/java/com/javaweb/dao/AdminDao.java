@@ -28,16 +28,58 @@ public class AdminDao {
             ps.setString(2,password);
 
             rs = ps.executeQuery();
-            rs.next();
+            while(rs.next()) {
                 admin.setUsername(rs.getString(1));
                 admin.setPassword(rs.getString(2));
                 admin.setId(rs.getInt(3));
-
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return admin;
+    }
+    //根据传入的密码判断是否有此用户
+    public String findByPassword(String password,String username){
+        String cPassword = null;
+
+        conn = DBUtil.getConnection();
+        String sql = "select password from admin where password = ? and username=?";
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,password);
+            ps.setString(2,username);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                cPassword = rs.getString(1);
+            }
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return  cPassword;
+    }
+    //更新旧密码
+    public Integer updatePassword(String oldPassword,String newPassword,String username){
+        int count = 0;
+        System.out.println(oldPassword+","+newPassword+","+username);
+        conn = DBUtil.getConnection();
+        String sql = "update admin set password=? where username=? and password = ?";
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,newPassword);
+            ps.setString(2,username);
+            ps.setString(3,oldPassword);
+
+            count = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }
