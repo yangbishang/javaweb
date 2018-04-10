@@ -6,7 +6,7 @@
 <div class="container-fluid">
 	<div class="col-md-4">
 		<%--<img src="img/logo2.png" />--%>
-		<h2>牛耳商城</h2>
+		<h2>Young商城</h2>
 	</div>
 	<div class="col-md-5">
 		<img src="img/header.png" />

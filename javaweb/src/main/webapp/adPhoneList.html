@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="static/h-ui/css/H-ui.min.css">
+    <link rel="stylesheet" href="static/h-ui.admin/css/H-ui.admin.css">
+    <link rel="stylesheet" href="static/Hui-iconfont/1.0.8/iconfont.css">
+    <link rel="stylesheet" href="static/h-ui.admin/skin/default/skin.css" id="skin">
+    <link rel="stylesheet" href="static/h-ui.admin/css/style.css">
+</head>
+<body>
+<nav class="breakcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i>&nbsp;首页
+    <span class="c-green en">&gt;</span>手机商品管理
+    <a class="btn btn-success radius r"
+       style="line-height: 1.6em;margin-top: 3px;"
+       href="javascript:location.replace(location.href)"
+       title="刷新">
+        <i class="Hui-iconfont">&#xe68f;</i>
+    </a>
+</nav>
+
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray">
+    <span class="l">
+      <a href="javascript:editPhone('新增手机',0);"
+         class="btn btn-primary radius">
+        <i class="Hui-iconfont">&#xe600;</i>&nbsp;新增
+      </a>
+    </span>
+    </div>
+
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <td>No.</td>
+                <td>产品名</td>
+                <td>图片</td>
+                <td>价格</td>
+                <td>评价</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr class="text-c">
+                <td>No.</td>
+                <td>产品名</td>
+                <td>图片</td>
+                <td>价格</td>
+                <td>评价</td>
+                <td>操作</td>
+            </tr>
+            </tfoot>
+            <tbody>
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer class="footer mt-20">
+    <div class="container">
+        Copyright &copy;2018-2028 SONG.net All Rights Reserved.
+    </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="static/h-ui/js/H-ui.min.js"></script>
+    <script src="static/h-ui.admin/js/H-ui.admin.js"></script>
+    <script src="static/layer/2.4/layer.js"></script>
+    <script src="static/layer/laypage.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script>
+        $(window).on("load",()=>{
+            $.get("AdProductServlet",(data)=>{
+
+                var text = ``
+                $.each(data,(i,item)=>{
+                    text +=`
+                       <tr class="text-c" id="${item.pid}">
+                            <td width="4%">${item.pid}</td>
+                            <td width="8%">${item.pname}</td>
+                            <td><img src="${item.pimage}" weight="100px" height="100px"></td>
+                            <td width="5%">${item.shop_price}</td>
+                            <td width="55%">${item.pdesc}</td>
+                            <td>
+                               <button onclick="editPhone('修改手机','${item.pid}')" type="button" class="btn btn-success radius" >修改</button>
+                               &nbsp;&nbsp;
+                               <button onclick="removePhone('${item.pid}','${item.pname}')" type="button" class="btn btn-danger radius" >删除</button>
+                            </td>
+
+                        </tr>
+                  `
+                })
+
+                $("tbody").append(text)
+
+                // jquery datatable 插件实现分页条件查询
+                $(".table-hover").dataTable({
+                    language: {
+                        url: "js/zh_CN.txt"
+                    }
+                })
+            })
+        })
+
+    </script>
+</footer>
+</body>
+</html>

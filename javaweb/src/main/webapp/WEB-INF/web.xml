@@ -25,6 +25,15 @@
     <url-pattern>/SessionServlet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AdProductServlet</servlet-name>
+    <servlet-class>com.javaweb.servlet.AdProductServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdProductServlet</servlet-name>
+    <url-pattern>/AdProductServlet</url-pattern>
+  </servlet-mapping>
+
 
   <servlet>
     <servlet-name>AdminServlet</servlet-name>

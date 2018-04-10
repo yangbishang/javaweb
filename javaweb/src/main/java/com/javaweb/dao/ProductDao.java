@@ -276,4 +276,67 @@ public class ProductDao {
         return count;
     }
 
+
+    //后台手机产品查询
+    public List<Product> findAdPhone(){
+        List<Product> list = new ArrayList<Product>();
+        conn = DBUtil.getConnection();
+        //  select id,name,price,create_date from car where 1=1 order by price desc limit 1,5;
+        String sql = "select pname,pimage,shop_price,pdesc,pid from product where cid=?";
+
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"1");
+
+
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Product product = new Product();
+                product.setPname(rs.getString(1));
+                product.setPimage(rs.getString(2));
+                product.setShop_price(rs.getDouble(3));
+                product.setPdesc(rs.getString(4));
+                product.setPid(rs.getString(5));
+                list.add(product);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(conn, ps, rs);
+        }
+        return list;
+    }
+
+    //后台电脑产品查询
+    public List<Product> findAdLaptop(){
+        List<Product> list = new ArrayList<Product>();
+        conn = DBUtil.getConnection();
+        //  select id,name,price,create_date from car where 1=1 order by price desc limit 1,5;
+        String sql = "select pname,pimage,shop_price,pdesc,pid from product where cid=?";
+
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"2");
+
+
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Product product = new Product();
+                product.setPname(rs.getString(1));
+                product.setPimage(rs.getString(2));
+                product.setShop_price(rs.getDouble(3));
+                product.setPdesc(rs.getString(4));
+                product.setPid(rs.getString(5));
+                list.add(product);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.close(conn, ps, rs);
+        }
+        return list;
+    }
+
 }
